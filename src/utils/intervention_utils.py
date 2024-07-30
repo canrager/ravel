@@ -6,15 +6,15 @@ import numpy as np
 import re
 
 from datasets import Dataset
-from methods.distributed_alignment_search import LowRankRotatedSpaceIntervention
-from methods.pca import PCARotatedSpaceIntervention
-from methods.sparse_autoencoder import AutoencoderIntervention
+from src.methods.distributed_alignment_search import LowRankRotatedSpaceIntervention
+from src.methods.pca import PCARotatedSpaceIntervention
+from src.methods.sparse_autoencoder import AutoencoderIntervention
 import pyvene as pv
 import torch
 from tqdm.auto import tqdm
 from torch.utils.data import DataLoader
 from torch.nn import CrossEntropyLoss
-from utils.dataset_utils import get_dataloader, is_llama_tokenizer
+from src.utils.dataset_utils import get_dataloader, is_llama_tokenizer
 
 
 def get_intervention_config(model_type,
@@ -100,7 +100,7 @@ def remove_invalid_token_id(token_ids, pad_id=2):
   return token_ids
 
 
-def eval_with_interventions(intervenable,
+def eval_with_interventions(intervenable, # Model with autoencoder spliced in
                             split_to_dataset,
                             split_to_inv_locations,
                             tokenizer,

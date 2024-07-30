@@ -1,7 +1,7 @@
 import collections
 import os
 
-from methods.sparse_autoencoder import SparseAutoencoder
+from src.methods.sparse_autoencoder import SparseAutoencoder
 import torch
 from torch.optim import AdamW
 from torch.utils.tensorboard import SummaryWriter
@@ -41,7 +41,7 @@ def train_sae(config, train_dataloader, val_dataloader):
       scheduler_specific_kwargs={
           'min_lr_rate': config['end_learning_rate_ratio']
       },
-  )
+)
 
   print(f'{task_name}')
   print('Total trainable parameters: %d' % count_parameters(autoencoder))
