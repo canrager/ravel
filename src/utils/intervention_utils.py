@@ -112,7 +112,7 @@ def eval_with_interventions(intervenable, # Model with autoencoder spliced in
   split_to_eval_metrics = {}
   padding_offset = 3 if is_llama_tokenizer(tokenizer) else 0
   num_inv = len(intervenable.interventions)
-  for split in split_to_dataset:
+  for split in tqdm(split_to_dataset):
     # Asssume all inputs have the same max length.
     prompt_max_length = split_to_inv_locations[split_to_dataset[split][0]
                                                ['split']]['max_input_length']
