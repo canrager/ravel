@@ -9,3 +9,6 @@ torchvision==0.18.0
 tqdm==4.66.2
 transformers==4.40.1
 numpy<2.0
+matplotlib
+tensorboard
+nnsight
