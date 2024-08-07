@@ -66,3 +66,46 @@ def compute_disentangle_score(log_data,
   return {'disentangle': 0.5 * (match_base + match_source),
           'isolate': match_base,
           'cause': match_source}
+
+def compute_disentangle_scores_possible_empties(log_data,
+                              attribute_to_iso_tasks,
+                              attribute_to_cause_tasks):
+    """Compute disentanglement score from iso/cause scores.
+    If we don't run with the full dataset, then some isolation tasks will be missing.
+    This way we can still view disentanglement scores"""
+    
+    # Debug print for iso tasks
+    print("Attribute to iso tasks:", attribute_to_iso_tasks)
+    
+    iso_scores = []
+    for a, ts in attribute_to_iso_tasks.items():
+        task_scores = [log_data[t]['metrics']['base_labels']['accuracy']
+                       for t in ts if t in log_data]
+        print(f"Iso scores for attribute {a}:", task_scores)
+        if task_scores:
+            iso_scores.append(np.mean(task_scores))
+    
+    print("All iso scores:", iso_scores)
+    
+    match_base = np.mean(iso_scores) if iso_scores else np.nan
+    print("match_base:", match_base)
+    
+    # Similar debug prints for cause tasks
+    print("Attribute to cause tasks:", attribute_to_cause_tasks)
+    
+    cause_scores = []
+    for a, ts in attribute_to_cause_tasks.items():
+        task_scores = [log_data[t]['metrics']['labels']['accuracy']
+                       for t in ts if t in log_data]
+        print(f"Cause scores for attribute {a}:", task_scores)
+        if task_scores:
+            cause_scores.append(np.mean(task_scores))
+    
+    print("All cause scores:", cause_scores)
+    
+    match_source = np.mean(cause_scores) if cause_scores else np.nan
+    print("match_source:", match_source)
+    
+    return {'disentangle': 0.5 * (match_base + match_source),
+            'isolate': match_base,
+            'cause': match_source}
