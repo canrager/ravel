@@ -4,3 +4,4 @@ data/**
 *.tgz
 notes/**
 *.zip
+hf_token.txt
