@@ -904,30 +904,26 @@ def compute_metrics_string_matching(tokenizer, eval_preds, eval_labels, last_n_t
 
 def save_eval_metrics(split_to_eval_metrics: dict, logging_filename: str):
     try:
-        # Check if the file already exists
-        if os.path.exists(logging_filename):
-            # If it exists, load the existing data
-            with open(logging_filename, "r") as f:
-                existing_data = json.load(f)
+        # # Check if the file already exists
+        # if os.path.exists(logging_filename):
+        #     # If it exists, load the existing data
+        #     with open(logging_filename, "r") as f:
+        #         existing_data = json.load(f)
 
-            # Update the existing data with new data
-            existing_data.update(split_to_eval_metrics)
-        else:
-            # If it doesn't exist, use the new data as is
-            existing_data = split_to_eval_metrics
+        #     # Update the existing data with new data
+        #     existing_data.update(split_to_eval_metrics)
+        # else:
+        #     # If it doesn't exist, use the new data as is
+        #     existing_data = split_to_eval_metrics
 
         # Write the updated or new data to the file
         with open(logging_filename, "w") as f:
-            json.dump(existing_data, f, indent=4)
+            json.dump(split_to_eval_metrics, f, indent=4)
 
         print(f"Successfully updated/saved JSON file: {logging_filename}")
 
     except (TypeError, ValueError, OSError) as e:
-        print(f"JSON dump failed: {e}. Attempting fallback options.")
-        backup_filename = logging_filename.replace(".json", "_backup.json")
-        print(f"Attempting to save to backup file: {backup_filename}")
-        with open(backup_filename, "w") as f:
-            json.dump(split_to_eval_metrics, f, indent=4)
+        print(f"JSON dump failed: {e}.")
 
 
 def convert_inv_dims_to_list(inv_dims):
@@ -1002,11 +998,12 @@ sae_filename = "layer_10/width_16k/average_l0_77/params.npz"
 
 l0s = [21, 39, 77, 166, 395]
 
-feature_selection_coefficients = [0.1, 10, 100, 1000]
-feature_selection_coefficients = [0.005, 0.01, 0.05]
+feature_selection_coefficients = [0.0005, 0.001, 0.01, 0.1, 10, 100, 1000]
+# feature_selection_coefficients = [0.005, 0.01, 0.05]
+# feature_selection_coefficients = [0.0001, 0.001]
 
 layer_idx = 10
-max_dataset_size = 10
+max_dataset_size = 120
 
 # verify that l0s exist
 for l0 in l0s:
